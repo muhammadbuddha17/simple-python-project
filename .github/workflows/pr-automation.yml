@@ -1,0 +1,25 @@
+name: PR Automation
+on:
+ pull_request:
+ types: [opened, synchronize]
+permissions:
+ contents: read
+ pull-requests: write
+jobs:
+ label:
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/labeler@v5
+ welcome:
+ if: github.event.action == 'opened'
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/github-script@v7
+ with:
+ script: |
+ await github.rest.issues.createComment({
+ owner: context.repo.owner,
+ repo: context.repo.repo,
+ issue_number: context.issue.number,
+ body: "Thanks for the PR! Please wait for the green checks."
+ });
