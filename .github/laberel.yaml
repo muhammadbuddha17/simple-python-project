@@ -1,0 +1,9 @@
+code:
+ - changed-files:
+ - any-glob-to-any-file: ["utils.py"]
+tests:
+ - changed-files:
+ - any-glob-to-any-file: ["test_*.py"]
+workflows:
+ - changed-files:
+ - any-glob-to-any-file: [".github/**"]
