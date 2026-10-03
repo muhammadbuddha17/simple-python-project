@@ -1,0 +1,27 @@
+name: Manual Demo
+on:
+ workflow_dispatch:
+ inputs:
+ name:
+ description: "Who should we greet?"
+ required: false
+ default: "team"
+permissions:
+ contents: read
+env:
+ APP_NAME: text-utils
+jobs:
+ demo:
+ runs-on: ubuntu-latest
+ steps:
+ - name: Greet
+ run: echo "Hello ${{ inputs.name }} from $APP_NAME"
+ - name: Show who and what
+ run: |
+ echo "Event: ${{ github.event_name }}"
+ echo "Actor: ${{ github.actor }}"
+ echo "Ref: ${{ github.ref }}"
+ - name: Test secret masking
+ env:
+ MY_SECRET: ${{ secrets.MY_SECRET }}
+ run: echo "The secret is $MY_SECRET"
