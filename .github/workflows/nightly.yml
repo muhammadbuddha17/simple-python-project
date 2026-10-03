@@ -1,0 +1,23 @@
+name: Nightly
+on:
+ schedule:
+ - cron: "30 20 * * *"
+ workflow_dispatch:
+permissions:
+ contents: read
+ issues: write
+jobs:
+ nightly-test:
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/checkout@v4
+ - uses: ./.github/actions/setup
+ - run: pytest
+ - name: Open an issue if this failed
+ if: failure()
+ env:
+ GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ run: |
+ gh issue create \
+ --title "Nightly run failed" \
+ --body "Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
